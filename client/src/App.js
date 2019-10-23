@@ -7,13 +7,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
 
-/*
-  root 클래스를 넓이 100%, 위쪽여백을 3의 가중치만큼 오버플로우X축으로 auto를 준다.
-  table은 무조건 1080이상 출력할수 있도록 하면 화면에 크기가 줄어들었을때도 
-  전체의 1080만큼 테이블을 차지하므로 가로 스크롤이 생긴다.
-*/
 const styles = theme => ({
   root: {
     width: '100%',
@@ -22,30 +18,35 @@ const styles = theme => ({
   },
   table: {
     minWidth: 1080
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
   }
 })
 
 class App extends Component{
 
-  // customers를 state에 넣어주기 때문에 밑에 this.state.customers로 바꿔준다.
   state = {
-    customers: ""
+    customers: "",
+    completed: 0
   }
 
-  // callApi를 키 customers, 값 res로 해준다. 혹시모를 err도 잡아준다.
   componentDidMount(){
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then(res => this.setState({customers: res}))
       .catch(err => console.log(err))
   }
 
-  /* 
-    로컬 api/customers async 비동식으로 받아와 response에 넣어주고 response를 json형식으로 body를 받아 return해준다.
-  */
   callApi = async () => {
     const response = await fetch('api/customers');
     const body = await response.json();
     return body;
+  }
+
+  progress = () => {
+    const {completed} = this.state;
+    this.setState({completed: completed >= 100 ? 0 : completed + 1});
   }
 
   render(){
@@ -78,7 +79,12 @@ class App extends Component{
                   job={c.job}
                 />
               );
-            }): ""
+            }) :
+            <TableRow>
+              <TableCell colSpan="6" align="center">
+                <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+              </TableCell>
+            </TableRow> 
           }
           </TableBody>
         </Table>
