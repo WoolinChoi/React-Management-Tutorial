@@ -1,3 +1,6 @@
+## Managemenet System
+본 프로젝트는 React 강의(동빈나)를 보고 만들어진 고객 관리 시스템입니다.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
