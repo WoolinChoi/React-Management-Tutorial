@@ -27,7 +27,7 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ] 
   },
   "description": "본 프로젝트는 React 강의(동빈나)를 보고 만들어진 고객 관리 시스템입니다.",
   "main": "index.js",
@@ -41,5 +41,6 @@
   "bugs": {
     "url": "https://github.com/WoolinChoi/React-Management-Tutorial/issues"
   },
-  "homepage": "https://github.com/WoolinChoi/React-Management-Tutorial#readme"
+  "homepage": "https://github.com/WoolinChoi/React-Management-Tutorial#readme",
+  "proxy": "http://localhost:5000/"
 }
