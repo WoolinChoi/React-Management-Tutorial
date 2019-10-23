@@ -55,7 +55,6 @@ class App extends Component{
     const {classes} = this.props;
 
     return(
-      // 3번 반복해서 써야할것을 map함수를 쓴다. 이때 map함수는 key값이 필요하므로 겹치지않는 id를 key값으로 준다.
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
