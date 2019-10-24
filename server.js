@@ -34,7 +34,7 @@ const upload = multer({dest: './upload'})
 app.get('/api/customers', (req, res) => {
     connection.query(
       // 고객데이터 조회
-      "SELECT * FROM CUSTOMER",
+      "SELECT * FROM CUSTOMER WHERE isDeleted = 0",
       (err, rows, fields) => {
         res.send(rows);
       }
@@ -44,8 +44,9 @@ app.get('/api/customers', (req, res) => {
 // image경로로 접근하여 express.static으로 업로드한 이미지를 공유
 app.use('/image', express.static('./upload'));
 
+// 고객정보 추가
 app.post('/api/customers', upload.single('image'), (req, res) => {
-  let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)";
+  let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?, now(), 0)";
   let image = '/image/' + req.file.filename; 
   let name = req.body.name;
   let birthday = req.body.birthday;
@@ -65,6 +66,17 @@ app.post('/api/customers', upload.single('image'), (req, res) => {
       // console.log(rows);
     }
   );
+});
+
+// 고객 정보 삭제 - isDeleted를 1로 바꾼 뒤에 고객데이터를 불러올 때 삭제되지 않은 데이터만 가져와야하낟.
+app.delete('/api/customers/:id', (req, res) => {
+  let sql = "UPDATE CUSTOMER SET isDeleted = 1 WHERE id = ?"
+  let params = [req.params.id];
+  connection.query(sql, params, 
+    (err, rows, fields) => {
+      res.send(rows);
+    }
+  )
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
