@@ -29,10 +29,10 @@ connection.connect();
 // 사용자가 customers 경로에 접속한 경우 데이터베이스에 접근해서 쿼리를 날릴 수 있도록 설정
 app.get('/api/customers', (req, res) => {
     connection.query(
+      // 고객데이터 조회
       "SELECT * FROM CUSTOMER",
       (err, rows, fields) => {
         res.send(rows);
-
       }
     )
 });
