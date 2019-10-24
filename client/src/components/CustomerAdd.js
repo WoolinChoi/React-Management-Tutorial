@@ -21,14 +21,24 @@ class CustomerAdd extends Component{
         this.addCustomer()
             .then((response) => {
                 console.log(response.data);
+                // 고객을 추가한 이후에 서버로부터 응답을 받고나서 고객목록을 다시 불러오도록 설정해준다.
+                this.props.stateRefresh();
             })
+        this.setState({
+            file: null,
+            userName: '',
+            birthday: '',
+            gender: '',
+            job: '',
+            fileName: ''
+        })
     }
 
     // 파일 값이 변경되었을 때
     handleFileChange = (e) => {
         this.setState({
             // e.taget은 그 이벤트가 발생한 input값 자체인데 file중에서 첫번째 값을 file 값으로 지정해준다. target의 value은 이름이다. 
-            file: e.target.file[0],
+            file: e.target.files[0],
             fileName: e.target.value
 
         })

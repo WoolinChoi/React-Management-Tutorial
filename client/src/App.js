@@ -14,29 +14,43 @@ import {withStyles} from '@material-ui/core/styles';
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto'
   },
   table: {
     minWidth: 1080
   },
   progress: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 })
 
 class App extends Component{
+  
+  constructor(props){
+    super(props);
+    this.state = {
+      customers: '',
+      completed: 0
+    }
+  }
 
-  state = {
-    customers: "",
-    completed: 0
+  // 상태가 바꼈을때 Refresh해주는 함수
+  stateRefresh = () => {
+    this.setState({
+      customers: '',
+      completed: 0
+    });
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
   }
 
   componentDidMount(){
     // this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then(res => this.setState({customers: res}))
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
   }
 
   callApi = async () => {
@@ -92,7 +106,7 @@ class App extends Component{
           </Table>
         </Paper>
 
-        <CustomerAdd/>
+        <CustomerAdd stateRefresh={this.stateRefresh}/>
       </div>
     );
   }
